@@ -2,7 +2,6 @@ from datetime import datetime
 
 from django.contrib.auth import logout
 from django.db import transaction
-from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view

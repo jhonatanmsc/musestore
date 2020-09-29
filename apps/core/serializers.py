@@ -1,17 +1,18 @@
 from rest_framework import serializers
 
-from apps.core.models import Product, SubCategory
+from apps.core.models import Product, Category
 
 
-class SubCategorySerializer(serializers.ModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = SubCategory
+        model = Category
         fields = ['id', 'title']
         read_only_fields = ['id']
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    sub_categories = SubCategorySerializer(many=True)
+    category = CategorySerializer()
+    sub_categories = CategorySerializer(many=True)
 
     class Meta:
         model = Product
