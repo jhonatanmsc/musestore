@@ -1,10 +1,6 @@
 from datetime import datetime
 
-from django.contrib.auth import logout
-from django.db import transaction
 from rest_framework import viewsets, status
-from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_jwt.settings import api_settings
@@ -82,12 +78,3 @@ class AuthToken(APIView):
                 return response
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['GET'])
-@transaction.atomic
-def authLogout(request):
-    token = Token.objects.filter(user_id=request.user.id)
-    token.delete()
-    logout(request.user)
-    return Response('Usuário deslogado', status=status.HTTP_200_OK)

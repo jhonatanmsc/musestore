@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include, re_path
 from drf_yasg import openapi
@@ -20,6 +21,7 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 from apps.user.urls import urlpatterns as user_router_urls
 from apps.core.urls import urlpatterns as core_router_urls
+from musestore import settings
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -31,6 +33,8 @@ schema_view = get_schema_view(
 )
 
 all_routes = user_router_urls + core_router_urls
+files = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+files = files + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -39,4 +43,4 @@ urlpatterns = [
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('', include(all_routes))
-]
+] + files
